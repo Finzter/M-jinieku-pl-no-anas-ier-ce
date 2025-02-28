@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="static\style.css">
+    <title>{{ texts.title }}</title>
+</head>
+<body>
+    <div id="sidebar">
+        <a href="{{ url_for('toggle_edit_mode') }}"><button class="bar">{% if edit_mode %}Beigt rediģēšanu{% else %}Rediģēt{% endif %}</button></a>
+        <a href="{{ url_for('toggle_show_important') }}"><button class="bar">{% if show_important %}Visi atgādinājumi{% else %}Svarīgi{% endif %}</button></a>
+        <a href="{{ url_for('toggle_par_info') }}"><button class="bar">Par aplikāciju</button></a>
+        <a href="{{ url_for('index') }}"><button class="bar">Atslēgties</button></a>
+
+        {% if par_info %}
+            <div id="About">
+                <h4>Par Aplikāciju </h4>
+                <a> Autors: Edvards Klinklāvs</a><br>
+                <a> Projekts sākts: 19.02.2025 </a><br>
+                <a> Un izdots: 27.02.2025</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div id="content">
+        <div id="maintable">
+            <h1>Atgādinājumi</h1>
+
+            {% if edit_mode %}
+            <form method="POST" action="{{ url_for('add_reminder') }}">
+                <textarea name="task" placeholder="Jauns atgādinājums" required></textarea>
+                <input type="date" name="due_date" required>
+                <button type="submit">Pievienot</button>
+            </form>
+            {% endif %}
+
+            <table>
+                <tr>
+                    <th>Uzdevums</th>
+                    <th>Termiņš</th>
+                    <th>Progress</th>
+                    <th>Svarīgi</th>
+                    {% if edit_mode %}<th>Darbība</th>{% endif %}
+                </tr>
+                {% if reminders %}
+                {% for reminder in reminders %}
+                <tr>
+                    <td>{{ reminder[1] }}</td>
+                    <td>{{ reminder[2] }}</td>
+                    <td>
+                        <form method="GET" action="{{ url_for('update_progress', reminder_id=reminder[0]) }}">
+                            <select name="progress" onchange="this.form.submit()">
+                                <option style="color: green;" value="neiesākts" {% if reminder[4] == 'neiesākts' %}selected{% endif %}>neiesākts</option>
+                                <option style="color: orange; "value="progresā" {% if reminder[4] == 'progresā' %}selected{% endif %}>iesākts</option>
+                                <option style="color: red;" value="nokavēts" {% if reminder[4] == 'nokavēts' %}selected{% endif %}>nokavēts</option>
+                                <option value="Pabeigts" {% if reminder[4] == 'Pabeigts' %}selected{% endif %}>Pabeigts</option>
+                            </select>
+                        </form>
+                    </td>
+                    <td class="funct">
+                        <a id="zvaiz" href="{{ url_for('toggle_important', reminder_id=reminder[0]) }}">
+                            {% if reminder[5] %}
+                                ★
+                            {% else %}
+                                ☆
+                            {% endif %}
+                        </a>
+                    </td>
+                    {% if edit_mode %}
+                    <td class="funct">
+                        <a style="color: red;" id="darb" href="{{ url_for('delete_reminder', reminder_id=reminder[0]) }}">Dzēst</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="5">Nav pievienotu atgādinājumu.</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static\style.css">
+    <title>Reģistrācija</title>
+</head>
+<body class="startbox">
+    <h1>Reģistrēties</h1>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="POST" action="{{ url_for('register') }}">
+        <label for="username">Lietotājvārds:</label>
+        <input type="text" id="username" name="username" minlength="4" required>
+        <br>
+        <label for="password">Parole:</label>
+        <input type="password" id="password" name="password" minlength="6" required>
+        <br>
+        <div class="buttons">
+        <button class="but" type="submit">Reģistrēties</button>
+    </form>
+    <a class="but" href="{{ url_for('login') }}">Atpakaļ uz pieslēgšanos</a>
+    <br>
+    <br>
+</div>
+</body>
+</html>
