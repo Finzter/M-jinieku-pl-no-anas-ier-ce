@@ -1,6 +1,7 @@
 {
     "title": "plānošanas ierīce",
     "name": "Mājinieku plānošanas ierīce",
-    "error_user_exists": "User already exists. Please choose a different username.",
-    "error_invalid_credentials": "Invalid username or password. Please try again."
+    "error_user_exists": "Lietotājs jau eksistē. Lūdzu izvēlies citu lietotājvārdu.",
+    "error_invalid_credentials": "Nepareizs lietotājvārds vai parole. Lūdzu meiģini vēlreiz."
 }
+
